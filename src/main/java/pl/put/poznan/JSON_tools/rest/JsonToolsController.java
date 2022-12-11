@@ -27,6 +27,23 @@ public class JsonToolsController
         this.jsonTools = jsonTools;
     }
 
+    @PostMapping( "/minimizeJson" )
+    public ResponseEntity< Object > minimizedJson( @RequestBody String jsonToConvert )
+    {
+        var minimizedJson = jsonTools.removeWhiteSpaces( jsonToConvert );
+        logger.info( "Converting done!" );
+        return new ResponseEntity<>( minimizedJson, HttpStatus.OK );
+
+    }
+
+    @PostMapping( "/beautifier" )
+    public ResponseEntity< Object > beautifier( @RequestBody String jsonToConvert )
+    {
+        var response = jsonTools.beautifier( jsonToConvert );
+        logger.info( "Converting done!" );
+        return new ResponseEntity<>( response, HttpStatus.OK );
+    }
+
     @PostMapping( "/sameResponse" )
     public ResponseEntity< Object > sendSameObjectInResponse( @RequestBody String json )
     {
