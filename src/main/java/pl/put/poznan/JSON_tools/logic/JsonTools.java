@@ -1,18 +1,23 @@
 package pl.put.poznan.JSON_tools.logic;
 
-/**
- * This is just an example to show that the logic should be outside the REST service.
- */
-public class JsonTools {
+import lombok.NoArgsConstructor;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
-    private final String[] transforms;
-
-    public JsonTools(String[] transforms){
-        this.transforms = transforms;
-    }
-
-    public String transform(String text){
-        // of course, normally it would do something based on the transforms
-        return text.toUpperCase();
+@Component
+@NoArgsConstructor
+public class JsonTools
+{
+    public void checkValidationOfJsonFormat(String json )
+    {
+        try
+        {
+            new JSONObject( json );
+        }
+        catch( JSONException e )
+        {
+            throw new JSONException( "" );
+        }
     }
 }
