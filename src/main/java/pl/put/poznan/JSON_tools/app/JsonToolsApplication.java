@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
-@SpringBootApplication(scanBasePackages = {"pl.put.poznan.JSON_tools"})
+@SpringBootApplication(scanBasePackages = {"pl.put.poznan.JSON_tools.rest"})
 public class JsonToolsApplication {
 
     public static void main(String[] args) {
