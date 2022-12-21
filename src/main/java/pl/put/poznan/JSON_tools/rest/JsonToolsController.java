@@ -3,15 +3,14 @@ package pl.put.poznan.JSON_tools.rest;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import pl.put.poznan.JSON_tools.logic.JsonFilter;
 import pl.put.poznan.JSON_tools.logic.JsonMinificator;
-import pl.put.poznan.JSON_tools.logic.JsonTools;
 import pl.put.poznan.JSON_tools.logic.JsonObject;
+import pl.put.poznan.JSON_tools.logic.JsonStandard;
 
 import javax.validation.ValidationException;
 import java.util.List;
@@ -22,13 +21,6 @@ import java.util.List;
 public class JsonToolsController
 {
     private static final Logger logger = LoggerFactory.getLogger( JsonToolsController.class );
-    private final JsonTools jsonTools;
-
-    @Autowired
-    public JsonToolsController( JsonTools jsonTools )
-    {
-        this.jsonTools = jsonTools;
-    }
 
     @PostMapping( "/minimizeJson" )
     public ResponseEntity< Object > minimizedJson( @RequestBody String jsonToConvert )
@@ -42,9 +34,9 @@ public class JsonToolsController
     @PostMapping( "/beautifier" )
     public ResponseEntity< Object > beautifier( @RequestBody String jsonToConvert )
     {
-        var response = jsonTools.beautifier( jsonToConvert );
+        JsonObject standardisedJson = new JsonStandard(createAndValidateJson(jsonToConvert));
         logger.info( "Converting done!" );
-        return new ResponseEntity<>( response, HttpStatus.OK );
+        return new ResponseEntity<>( standardisedJson.getJSON(), HttpStatus.OK );
     }
 
     @PostMapping( "/filter" )
