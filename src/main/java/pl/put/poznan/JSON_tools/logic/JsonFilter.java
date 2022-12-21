@@ -18,22 +18,9 @@ public class JsonFilter extends JsonDecorator
     @Override
     public String getJSON()
     {
-        JSONObject json = jsonObject;
-        json.keySet()
-            .removeIf( key -> !ifInclude( key ) );
-        return json.toString();
+        this.jsonObject.keySet()
+            .removeIf( key -> !this.keys.contains(key));
+        return this.jsonObject.toString();
     }
 
-    private boolean ifInclude( String key )
-    {
-
-        for( String k : keys )
-        {
-            if( k.equals( key ) )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 }

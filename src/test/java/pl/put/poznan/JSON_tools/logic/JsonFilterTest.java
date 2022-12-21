@@ -3,8 +3,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import pl.put.poznan.JSON_tools.logic.JsonFilter;
-import pl.put.poznan.JSON_tools.logic.JsonObject;
 
 import java.util.Arrays;
 
