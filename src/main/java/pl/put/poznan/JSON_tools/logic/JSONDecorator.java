@@ -12,8 +12,8 @@ public abstract class JSONDecorator extends JSONObject{
         this.jsonObject = jsonObject;
     }
 
-    public String getJSON() {
-        return jsonObject.toString();
+    public JSONObject getJSON() {
+        return jsonObject;
     }
     
 }
