@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import pl.put.poznan.JSON_tools.logic.JsonMinificator;
 import pl.put.poznan.JSON_tools.logic.JsonTools;
 import pl.put.poznan.JSON_tools.logic.JsonObject;
 
@@ -34,9 +35,9 @@ public class JsonToolsController
     @PostMapping( "/minimizeJson" )
     public ResponseEntity< Object > minimizedJson( @RequestBody String jsonToConvert )
     {
-        var minimizedJson = jsonTools.removeWhiteSpaces( jsonToConvert );
+        JsonObject minimizedJson = new JsonMinificator(createAndValidateJson(jsonToConvert));
         logger.info( "Converting done!" );
-        return new ResponseEntity<>( minimizedJson, HttpStatus.OK );
+        return new ResponseEntity<>( minimizedJson.getJSON(), HttpStatus.OK );
 
     }
 
