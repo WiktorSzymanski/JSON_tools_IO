@@ -6,17 +6,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import pl.put.poznan.JSON_tools.logic.JsonFilter;
 import pl.put.poznan.JSON_tools.logic.JsonMinificator;
 import pl.put.poznan.JSON_tools.logic.JsonTools;
 import pl.put.poznan.JSON_tools.logic.JsonObject;
 
 import javax.validation.ValidationException;
+import java.util.List;
 
 @RestController( "SystemController" )
 @RequestMapping( "/jsonToolsSystem" )
@@ -49,6 +47,14 @@ public class JsonToolsController
         return new ResponseEntity<>( response, HttpStatus.OK );
     }
 
+    @PostMapping( "/filter" )
+    public ResponseEntity< Object > filterJson(@RequestBody String jsonToConvert, @RequestParam List<String> param)
+    {
+        JsonObject filterJson = new JsonFilter(createAndValidateJson(jsonToConvert), param);
+        logger.info( "Create object to filter!" );
+        return new ResponseEntity<>( filterJson.getJSON(), HttpStatus.OK );
+
+    }
     @PostMapping( "/sameResponse" )
     public ResponseEntity< Object > sendSameObjectInResponse( @RequestBody String json )
     {
