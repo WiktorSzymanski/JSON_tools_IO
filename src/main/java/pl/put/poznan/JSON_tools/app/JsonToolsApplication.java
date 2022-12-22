@@ -7,9 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 { "pl.put.poznan" } )
 public class JsonToolsApplication
 {
-@SpringBootApplication(scanBasePackages = {"pl.put.poznan.JSON_tools"})
-public class JsonToolsApplication {
-
     public static void main( String[] args )
     {
         SpringApplication.run( JsonToolsApplication.class, args );
