@@ -13,9 +13,7 @@ import pl.put.poznan.JSON_tools.logic.JsonObject;
 import pl.put.poznan.JSON_tools.logic.JsonStandard;
 
 import javax.validation.ValidationException;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController( "SystemController" )
 @RequestMapping( "/jsonToolsSystem" )
