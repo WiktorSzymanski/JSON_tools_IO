@@ -65,7 +65,7 @@ class JsonToolsControllerTest
                 testRestTemplate.exchange( "/jsonToolsSystem/minimizeJson", HttpMethod.POST,
                     new HttpEntity<>( exampleCorrectJson ), String.class );
             // THEN
-            assertEquals( HttpStatus.CONFLICT, responsePost.getStatusCode() );
+            assertEquals( HttpStatus.BAD_REQUEST, responsePost.getStatusCode() );
             assertEquals( objectMapper.writeValueAsString( expectedResult ), responsePost.getBody() );
         }
     }
@@ -99,7 +99,7 @@ class JsonToolsControllerTest
                 testRestTemplate.exchange( "/jsonToolsSystem/sameResponse", HttpMethod.POST,
                     new HttpEntity<>( exampleCorrectJson ), String.class );
             // THEN
-            assertEquals( HttpStatus.CONFLICT, responsePost.getStatusCode() );
+            assertEquals( HttpStatus.BAD_REQUEST, responsePost.getStatusCode() );
             assertEquals( objectMapper.writeValueAsString( expectedResult ), responsePost.getBody() );
         }
     }
@@ -131,7 +131,7 @@ class JsonToolsControllerTest
             ResponseEntity< String > responsePost = testRestTemplate.exchange( "/jsonToolsSystem/beautifier",
                 HttpMethod.POST, new HttpEntity<>( exampleCorrectJson ), String.class );
             // THEN
-            assertEquals( HttpStatus.CONFLICT, responsePost.getStatusCode() );
+            assertEquals( HttpStatus.BAD_REQUEST, responsePost.getStatusCode() );
             assertEquals( objectMapper.writeValueAsString( expectedResult ), responsePost.getBody() );
         }
     }

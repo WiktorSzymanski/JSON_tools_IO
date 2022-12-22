@@ -12,14 +12,17 @@ class JsonFilterTest {
     void testFiltering() {
         JsonObject json = new JsonObject("{one: two, key: value}");
         JsonFilter jf = new JsonFilter(json, Arrays.asList("key"));
-        assertEquals("{\"key\":\"value\"}", jf.getJSON());
+        assertEquals("{\"key\": \"value\"}", jf.getJSON());
     }
 
     @Test
     void testFiltering2() {
         JsonObject json = new JsonObject("{one: two, key: value}");
         JsonFilter jf = new JsonFilter(json, Arrays.asList("key", "one"));
-        assertEquals("{\"one\":\"two\",\"key\":\"value\"}", jf.getJSON());
+        assertEquals("{\n" +
+                "    \"one\": \"two\",\n" +
+                "    \"key\": \"value\"\n" +
+                "}", jf.getJSON());
 
     }
 
