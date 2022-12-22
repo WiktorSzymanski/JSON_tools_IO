@@ -36,7 +36,7 @@ public class JsonFilter extends JsonDecorator
          */
         this.jsonObject.keySet()
             .removeIf( key -> !this.keys.contains(key));
-        return this.jsonObject.toString();
+        return this.jsonObject.toString(4);
     }
 
 }

@@ -23,6 +23,6 @@ public class JsonObject extends JSONObject {
      * Basic getter of JsonObject class
      */
     public String getJSON() {
-        return this.toString(2);
+        return this.toString(4);
     }
 }
