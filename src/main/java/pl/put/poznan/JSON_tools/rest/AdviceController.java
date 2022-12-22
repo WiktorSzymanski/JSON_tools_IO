@@ -1,5 +1,7 @@
 package pl.put.poznan.JSON_tools.rest;
 
+import javax.validation.ValidationException;
+
 import org.json.JSONException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,9 @@ import pl.put.poznan.JSON_tools.dto.MessageResponse;
 public class AdviceController
 {
     @ExceptionHandler(
-            { JSONException.class, JsonProcessingException.class } )
+    { JSONException.class, JsonProcessingException.class, ValidationException.class } )
     public ResponseEntity< Object > handleJsonProcessingException()
     {
-        return new ResponseEntity<>(
-                new MessageResponse( "Wrong json input format!" ),
-                HttpStatus.CONFLICT );
+        return new ResponseEntity<>( new MessageResponse( "Wrong json input format!" ), HttpStatus.CONFLICT );
     }
 }
