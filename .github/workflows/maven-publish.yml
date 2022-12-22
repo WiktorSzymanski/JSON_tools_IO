@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - '*'
+    
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+        server-id: github 
+        settings-path: ${{ github.workspace }} 
+    - name: run mvn
+      run: mvn package --batch-mode --update-snapshot
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "target/*.jar"
+        body: "# Release ${{ steps.vars.outputs.tag }}" 
+        
