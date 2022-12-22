@@ -19,6 +19,6 @@ public class JsonStandard extends JsonDecorator{
      */
     @Override
     public String getJSON() {
-        return jsonObject.toString(2);
+        return jsonObject.toString(4);
     }
 }
