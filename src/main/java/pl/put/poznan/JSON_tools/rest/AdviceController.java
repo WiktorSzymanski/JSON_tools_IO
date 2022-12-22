@@ -19,6 +19,6 @@ public class AdviceController
     { JSONException.class, JsonProcessingException.class, ValidationException.class } )
     public ResponseEntity< Object > handleJsonProcessingException()
     {
-        return new ResponseEntity<>( new MessageResponse( "Wrong json input format!" ), HttpStatus.CONFLICT );
+        return new ResponseEntity<>( new MessageResponse( "Wrong json input format!" ), HttpStatus.BAD_REQUEST );
     }
 }
