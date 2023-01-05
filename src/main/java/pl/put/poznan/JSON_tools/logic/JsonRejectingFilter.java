@@ -1,16 +1,8 @@
 package pl.put.poznan.JSON_tools.logic;
 
-
-
 import java.util.List;
 
-/**
- * Extends {@see JsonDecorator}.  It adds keys that store keys in List with String elements object to be return with values
-
-*/
-public class JsonFilter extends JsonDecorator
-{
-
+public class JsonRejectingFilter extends JsonDecorator{
     private final List<String> keys;
 
     /**
@@ -18,7 +10,7 @@ public class JsonFilter extends JsonDecorator
      * @param jsonObject JsonObject class object
      * @param keys list of keys to filter JSON object
      */
-    public JsonFilter(JsonObject jsonObject, List<String> keys) {
+    public JsonRejectingFilter(JsonObject jsonObject, List<String> keys) {
         super(jsonObject);
         this.keys = keys;
     }
@@ -35,8 +27,7 @@ public class JsonFilter extends JsonDecorator
          * @return JSON Object cast to String
          */
         this.jsonObject.keySet()
-            .removeIf( key -> !this.keys.contains(key));
+                .removeIf( key -> this.keys.contains(key));
         return this.jsonObject.toString(4);
     }
-
 }
