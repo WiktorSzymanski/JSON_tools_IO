@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import pl.put.poznan.JSON_tools.logic.JsonFilter;
-import pl.put.poznan.JSON_tools.logic.JsonMinificator;
-import pl.put.poznan.JSON_tools.logic.JsonObject;
-import pl.put.poznan.JSON_tools.logic.JsonStandard;
+import pl.put.poznan.JSON_tools.logic.*;
 
 import javax.validation.ValidationException;
 import java.util.List;
@@ -55,7 +52,15 @@ public class JsonToolsController
         return new ResponseEntity<>( jsonObject.getJSON(), HttpStatus.OK );
     }
 
+    @PostMapping( "/rejectingFilter" )
 
+    public ResponseEntity< Object > rejectingFilterJson(@RequestBody String jsonToConvert, @RequestParam List<String> param)
+    {
+        JsonObject rejectingFilterJson = new JsonRejectingFilter(createAndValidateJson(jsonToConvert), param);
+        logger.info( "Create object to rejecting filter!" );
+        return new ResponseEntity<>( rejectingFilterJson.getJSON(), HttpStatus.OK );
+
+    }
     private JsonObject createAndValidateJson(String json) {
         try {
             return new JsonObject(json);
