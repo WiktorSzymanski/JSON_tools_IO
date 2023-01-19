@@ -1,10 +1,12 @@
 package pl.put.poznan.JSON_tools.logic;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class JsonFilterTest {
 
@@ -31,6 +33,5 @@ class JsonFilterTest {
         JsonObject json = new JsonObject("{one: two, key: value}");
         JsonFilter jf = new JsonFilter(json, Arrays.asList(""));
         assertEquals("{}", jf.getJSON());
-
     }
 }
