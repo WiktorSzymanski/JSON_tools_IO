@@ -139,7 +139,7 @@ public class JsonToolsController
      * @return {@link JsonObject}
      */
 
-    private JsonObject createAndValidateJson(String json) {
+    public static JsonObject createAndValidateJson(String json) {
         try {
             return new JsonObject(json);
         } catch(JSONException e) {
