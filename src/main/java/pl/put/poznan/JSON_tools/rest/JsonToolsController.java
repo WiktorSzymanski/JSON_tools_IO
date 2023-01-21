@@ -86,9 +86,10 @@ public class JsonToolsController
     /**
      * Sends the same JSON passed as request body in the response.
      * <p>
-     * The method is mapped to the endpoint '/sameResponse' with {@link PostMapping} and takes in a {@link String} as request body.
-     * It creates an instance of {@link JsonObject} passing the json passed in request body and validates it,
-     * and returns the same json as a {@link ResponseEntity} with {@link HttpStatus#OK}.
+     * The method is mapped to the endpoint '/filter' with {@link PostMapping} and takes in a {@link String} as request body
+     * and a {@link List} of {@link String} as request parameter.
+     * It creates an instance of {@link JsonFilter} passing the json passed in request body and the list of parameters,
+     * and returns the filtered json as a {@link ResponseEntity} with {@link HttpStatus#OK}.
      * </p>
      *
      * @param json the json to be sent in the response
@@ -101,6 +102,30 @@ public class JsonToolsController
         logger.info( "Received object!" );
         return new ResponseEntity<>( jsonObject.getJSON(), HttpStatus.OK );
     }
+
+
+    /**
+     * Sends the same JSON passed as request body in the response.
+     * <p>
+     * The method is mapped to the endpoint '/rejectedFilter' with {@link PostMapping} and takes in a {@link String} as request body
+     * and a {@link List} of {@link String} as request parameter.
+     * It creates an instance of {@link JsonFilter} passing the json passed in request body and the list of parameters,
+     * and returns the filtered json without object send as key in @param  a {@link ResponseEntity} with {@link HttpStatus#OK}.
+     * </p>
+     *
+     * @param jsonToConvert the json to be sent in the response
+     * @return {@link ResponseEntity} with the same json and {@link HttpStatus#OK}
+     */
+    @PostMapping( "/rejectingFilter" )
+
+    public ResponseEntity< Object > rejectingFilterJson(@RequestBody String jsonToConvert, @RequestParam List<String> param)
+    {
+        JsonObject rejectingFilterJson = new JsonRejectingFilter(createAndValidateJson(jsonToConvert), param);
+        logger.info( "Create object to rejecting filter!" );
+        return new ResponseEntity<>( rejectingFilterJson.getJSON(), HttpStatus.OK );
+
+    }
+
     /**
      * Crates and validates a JsonObject
      * This method is a static method that takes the string parameter "json"
@@ -114,18 +139,7 @@ public class JsonToolsController
      * @return {@link JsonObject}
      */
 
-
-    @PostMapping( "/rejectingFilter" )
-
-    public ResponseEntity< Object > rejectingFilterJson(@RequestBody String jsonToConvert, @RequestParam List<String> param)
-    {
-        JsonObject rejectingFilterJson = new JsonRejectingFilter(createAndValidateJson(jsonToConvert), param);
-        logger.info( "Create object to rejecting filter!" );
-        return new ResponseEntity<>( rejectingFilterJson.getJSON(), HttpStatus.OK );
-
-    }
     private JsonObject createAndValidateJson(String json) {
-
         try {
             return new JsonObject(json);
         } catch(JSONException e) {
