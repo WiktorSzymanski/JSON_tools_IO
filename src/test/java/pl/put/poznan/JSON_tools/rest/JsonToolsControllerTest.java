@@ -191,7 +191,7 @@ class JsonToolsControllerTest {
             // GIVEN
             var url = "/jsonToolsSystem/filter";
             var exampleCorrectJson = "{\"one\": \"two\", \"key\": \"value\"}";
-            var expectedResult = "{\"one\": \"two\"}";
+            var expectedResult = "[{\"one\":\"two\"}]";
             List<String> requestBodyParams = List.of("one");
             UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
                     .queryParam("param", requestBodyParams);
