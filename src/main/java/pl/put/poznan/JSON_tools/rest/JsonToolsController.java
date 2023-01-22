@@ -126,6 +126,29 @@ public class JsonToolsController
 
     }
 
+
+    /**
+     * Sends the same JSON passed as request body in the response.
+     * <p>
+     * The method is mapped to the endpoint '/parseToNumeric' with {@link PostMapping} and takes in a {@link String} as request body.
+     * It creates an instance of {@link JsonNumericParser} passing the json passed in request body,
+     * and returns the json with it's numeric values parsed to numbers as a {@link ResponseEntity} with {@link HttpStatus#OK}.
+     * </p>
+     *
+     * @param jsonToConvert the json to be sent in the response
+     * @return {@link ResponseEntity} with the same json and {@link HttpStatus#OK}
+     */
+    @PostMapping( "/parseToNumeric" )
+
+    public ResponseEntity< Object > parseToNumericJson(@RequestBody String jsonToConvert)
+    {
+        JsonObject parseToNumericJson = new JsonNumericParser(createAndValidateJson(jsonToConvert));
+        logger.info( "Create object to parse values to numeric!" );
+        return new ResponseEntity<>( parseToNumericJson.getJSON(), HttpStatus.OK );
+
+    }
+
+
     /**
      * Crates and validates a JsonObject
      * This method is a static method that takes the string parameter "json"
