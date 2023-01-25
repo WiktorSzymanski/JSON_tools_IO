@@ -1,5 +1,6 @@
 package pl.put.poznan.JSON_tools.logic;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -29,15 +30,42 @@ public class JsonNumericParser extends JsonDecorator {
                 try {
                     jsonObject.put(key, Double.parseDouble((String) value));
                 } catch (NumberFormatException ignored) {}
+            } else if (value instanceof JSONArray) {
+                try {
+                    jsonObject.put(key, inDepth((JSONArray) value));
+                } catch (NumberFormatException ignored) {}
             }
         }
         return jsonObject;
     }
 
     /**
+     * Does the same as parseValues except it operates on JSONArray instead of JsonObject
+     * @param jsonArray JSONArray class object
+     * @return JSONArray with numeric strings as numeric values
+     */
+    private JSONArray inDepth(JSONArray jsonArray) {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            var obj = jsonArray.get(i);
+            if (obj instanceof JSONObject) {
+                jsonArray.put(i, inDepth((JSONObject) obj));
+            } else if (obj instanceof String) {
+                try {
+                    jsonArray.put(i, Double.parseDouble((String) obj));
+                } catch (NumberFormatException ignored) {}
+            } else if (obj instanceof JSONArray) {
+                try {
+                    jsonArray.put(i, inDepth((JSONArray) obj));
+                } catch (NumberFormatException ignored) {}
+            }
+        }
+        return jsonArray;
+    }
+
+    /**
      * Does the same as parseValues except it operates on JSONObject instead of JsonObject
      * @param jsonObject JSONObject class object
-     * @return JSONObject cast to String
+     * @return JSONObject with numeric strings as numeric values
      */
     private JSONObject inDepth(JSONObject jsonObject) {
         for (String key : jsonObject.keySet()) {
@@ -47,6 +75,10 @@ public class JsonNumericParser extends JsonDecorator {
             } else if (value instanceof String) {
                 try {
                     jsonObject.put(key, Double.parseDouble((String) value));
+                } catch (NumberFormatException ignored) {}
+            } else if (value instanceof JSONArray) {
+                try {
+                    jsonObject.put(key, inDepth((JSONArray) value));
                 } catch (NumberFormatException ignored) {}
             }
         }
