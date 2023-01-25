@@ -167,6 +167,7 @@ public class JsonToolsController
      * @return {@link JsonObject}
      */
 
+
     public static JsonObject createAndValidateJson(String json) {
         try {
             return new JsonObject(json);

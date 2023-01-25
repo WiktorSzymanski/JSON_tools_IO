@@ -1,7 +1,9 @@
 package pl.put.poznan.JSON_tools.logic;
 
 
-
+import org.json.JSONArray;
+import org.json.JSONObject;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ public class JsonFilter extends JsonDecorator
 {
 
     private final List<String> keys;
+
 
     /**
      * class constructor
@@ -34,9 +37,44 @@ public class JsonFilter extends JsonDecorator
          * then delete it from JSON
          * @return JSON Object cast to String
          */
-        this.jsonObject.keySet()
-            .removeIf( key -> !this.keys.contains(key));
-        return this.jsonObject.toString(4);
+        ArrayList<JsonObject> filteredJson= new ArrayList<JsonObject>();
+        filterHelper(this.jsonObject, this.keys,  filteredJson);
+        //this.jsonObject.keySet().removeIf( key -> !this.keys.contains(key));
+
+        return filteredJson.toString();
+    }
+
+    /**
+     * This method filterHelper filters the given JSONObject and adds the filtered key-value pairs to the ArrayList of JsonObjects.
+     * @param obj JSONObject to be filtered
+     * @param key List of keys to be filtered
+     * @param filtered ArrayList of JsonObjects to hold the filtered key-value pairs
+     */
+    private void filterHelper(JSONObject obj, List<String> key, ArrayList<JsonObject> filtered) {
+        for (String k : obj.keySet()) {
+            Object value = obj.get(k);
+            if (value instanceof JSONObject) {
+                filterHelper((JSONObject) value, key, filtered);
+            } else if (value instanceof JSONArray) {
+                filterArray((JSONArray) value, key, filtered);
+            } else if (key.contains(k)) {
+                filtered.add(new JsonObject("{"+k.toString()+":"+value.toString()+"}"));
+            }
+        }
+    }
+    /**
+     * This method filterArray filters the given JSONArray and adds the filtered key-value pairs to the ArrayList of JsonObjects.
+     * @param array JSONArray to be filtered
+     * @param key List of keys to be filtered
+     * @param filtered ArrayList of JsonObjects to hold the filtered key-value pairs
+     */
+    private void filterArray(JSONArray array, List<String> key, ArrayList<JsonObject> filtered) {
+        for (int i = 0; i < array.length(); i++) {
+            Object value = array.get(i);
+            if (value instanceof JSONObject) {
+                filterHelper((JSONObject) value, key, filtered);
+            }
+        }
     }
 
 }
