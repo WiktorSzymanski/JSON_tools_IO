@@ -254,4 +254,80 @@ class JsonToolsControllerTest {
                     () -> JsonToolsController.createAndValidateJson(exampleCorrectJson));
         }
     }
+
+    @Nested
+    class JsonTools_numericParser {
+        @Test
+        void parseToNumeric_shouldReturnCorrectWhenJsonFormatPassed() {
+            // GIVEN
+            var exampleCorrectJson = JsonToolsTestHelper.CORRECT_JSON_EXAMPLE;
+            var expectedResult = JsonToolsTestHelper.CORRECT_JSON_EXAMPLE;
+            // WHEN
+            ResponseEntity<String> responsePost =
+                    testRestTemplate.exchange("/jsonToolsSystem/parseToNumeric", HttpMethod.POST,
+                            new HttpEntity<>(exampleCorrectJson), String.class);
+            // THEN
+            assertEquals(HttpStatus.OK, responsePost.getStatusCode());
+            assertEquals(expectedResult, responsePost.getBody());
+        }
+
+        @Test
+        void parseToNumeric_shouldThrowExceptionWhenWrongFormatPassed() throws JsonProcessingException {
+            // GIVEN
+            var exampleCorrectJson = JsonToolsTestHelper.WRONG_JSON_FORMAT_EXAMPLE;
+            var expectedResult = new MessageResponse("Wrong json input format!");
+            // WHEN
+            ResponseEntity<String> responsePost =
+                    testRestTemplate.exchange("/jsonToolsSystem/parseToNumeric", HttpMethod.POST,
+                            new HttpEntity<>(exampleCorrectJson), String.class);
+            // THEN
+            assertEquals(HttpStatus.BAD_REQUEST, responsePost.getStatusCode());
+            assertEquals(objectMapper.writeValueAsString(expectedResult), responsePost.getBody());
+        }
+
+        @Test
+        void parseToNumeric_mockTest() {
+            // GIVEN
+            var restController = mock(JsonToolsController.class);
+            // WHEN
+            // THEN
+            given(restController.parseToNumericJson(null)).willThrow(new ValidationException("Wrong format!"));
+        }
+
+        @Test
+        void parseToNumeric_mockTest2() {
+            // GIVEN
+            var restController = mock(JsonToolsController.class);
+            // WHEN
+            restController.parseToNumericJson("");
+            restController.parseToNumericJson("");
+            restController.parseToNumericJson("");
+            // THEN
+            verify(restController, times(3)).parseToNumericJson(any(String.class));
+        }
+    }
+
+    @Nested
+    class JsonTools_rejectingFilter {
+        @Test
+        void rejectingFilter_mockTest() {
+            // GIVEN
+            var restController = mock(JsonToolsController.class);
+            // WHEN
+            // THEN
+            given(restController.rejectingFilterJson(null, List.of())).willThrow(new ValidationException("Wrong format!"));
+        }
+
+        @Test
+        void rejectingFilter_mockTest2() {
+            // GIVEN
+            var restController = mock(JsonToolsController.class);
+            // WHEN
+            restController.rejectingFilterJson("", List.of());
+            restController.rejectingFilterJson("", List.of());
+            restController.rejectingFilterJson("", List.of());
+            // THEN
+            verify(restController, times(3)).rejectingFilterJson(any(String.class), any(List.class));
+        }
+    }
 }
