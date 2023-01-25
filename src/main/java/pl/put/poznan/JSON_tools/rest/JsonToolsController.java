@@ -1,5 +1,8 @@
 package pl.put.poznan.JSON_tools.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.put.poznan.JSON_tools.logic.*;
 
 import javax.validation.ValidationException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -145,6 +150,34 @@ public class JsonToolsController
             return new JsonObject(json);
         } catch(JSONException e) {
             throw new ValidationException("Wrong format!");
+        }
+    }
+
+    /**
+     * Sends a list of lines where the checked jsons are different
+     * <p>
+     *    I can compare two texts expecting that the application will show the lines where there is a difference.
+     * </p>
+     *
+     * @param aJsonObjects
+     * @return
+     * @throws JsonProcessingException
+     */
+
+    @PostMapping("/compare")
+    public ResponseEntity<Object> compareTwoStringObjects(@RequestBody String aJsonObjects) throws JsonProcessingException {
+        logger.info("Start comparing!");
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(aJsonObjects);
+            String obj1 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root.get("object1"));
+            String obj2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root.get("object2"));
+            List<Integer> differences = new ArrayList<>();
+            JsonComparator.getDifferences(obj1, obj2, differences);
+            return new ResponseEntity<>(differences, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }
